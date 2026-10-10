@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Starlight | AI Music Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<canvas id="sky"></canvas>
+<div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+<header class="topbar">
+  <a class="brand" href="#"><span class="brand-icon">♫</span><span><b>starlight</b><small>AI MUSIC STUDIO</small></span></a>
+  <nav><a class="nav-link active" href="#studio">Studio</a><a class="nav-link" href="#piano-section">Play piano</a><a class="nav-link" href="#library">My music</a></nav>
+  <div class="top-actions"><span class="live-dot"></span><span class="status-label">Studio ready</span><button class="icon-btn" id="soundToggle" title="Toggle sound effects">♪</button></div>
+</header>
+
+<main>
+<section class="hero" id="studio">
+  <div class="hero-copy">
+    <div class="eyebrow"><span class="sparkle">✦</span> YOUR PERSONAL MUSIC UNIVERSE</div>
+    <h1>Make music.<br><span>Feel the magic.</span></h1>
+    <p>Compose a new melody with AI, or sit down at your own glowing piano and play whatever you feel.</p>
+    <div class="hero-buttons"><button class="primary-btn" id="heroGenerate">✦ Generate a song <span>↗</span></button><a class="secondary-btn" href="#piano-section">Play the piano <span>↓</span></a></div>
+    <div class="tiny-stats"><div><strong>01</strong><span>Generate</span></div><i></i><div><strong>02</strong><span>Play</span></div><i></i><div><strong>03</strong><span>Save & share</span></div></div>
+  </div>
+  <div class="hero-art">
+    <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+    <div class="moon">☾</div><div class="floating-note note-a">♫</div><div class="floating-note note-b">♪</div><div class="floating-note note-c">♬</div>
+    <div class="music-globe"><div class="globe-ring"></div><div class="globe-land land-a"></div><div class="globe-land land-b"></div><div class="globe-shine"></div><span class="globe-note">♫</span></div>
+    <div class="art-caption"><span class="caption-dot"></span><div><b>Ideas in orbit</b><small>Every note starts somewhere</small></div></div>
+  </div>
+</section>
+
+<section class="workspace">
+  <div class="section-heading"><div><div class="eyebrow">THE CREATIVE SPACE</div><h2>What will you make today?</h2></div><span class="section-tag">✧ Made for curious minds</span></div>
+  <div class="mode-grid">
+    <article class="mode-card generator-card">
+      <div class="card-top"><span class="mode-icon purple">✧</span><span class="card-number">01 / AI</span></div>
+      <h3>AI song generator</h3><p>Turn a musical idea into a melody. Choose a mood, set the tempo, and let the notes unfold.</p>
+      <div class="control-row"><label for="style">Mood</label><select id="style"><option>Dreamy</option><option>Classical</option><option>Pop</option><option>Jazz</option><option>Lo-fi</option><option>Relaxing</option></select></div>
+      <div class="control-row"><label for="languageStyle">Language &amp; style</label><select id="languageStyle"><option>English</option><option>Hindi Bollywood</option><option>Urdu</option><option>Pakistani drama OST</option><option>Ghazal</option><option>Qawwali</option><option>Romantic Hindi/Urdu</option><option>Sad Hindi/Urdu</option><option>Classical Indian-inspired music</option></select></div>
+      <div class="control-row tempo-row"><label for="tempo">Tempo <b><span id="tempoValue">112</span> BPM</b></label><input id="tempo" type="range" min="55" max="180" value="112"></div>
+      <div class="control-row"><label for="bars">Length</label><select id="bars"><option value="4">Short · 4 bars</option><option value="8" selected>Medium · 8 bars</option><option value="16">Long · 16 bars</option></select></div>
+      <button class="card-action" id="generateBtn">Generate melody <span>✦</span></button>
+      <small class="hint" id="generatorHint">Your first melody is one click away. This version uses algorithmic generation rather than a trained neural network.</small>
+    </article>
+    <article class="mode-card player-card">
+      <div class="card-top"><span class="mode-icon blue">▶</span><span class="card-number">02 / LISTEN</span></div>
+      <h3>Your song, in motion</h3><p>Listen to your generated melody or load a MIDI file from your computer.</p>
+      <div class="now-playing">
+        <div class="album-art"><div class="album-sun"></div><div class="album-wave wave-1"></div><div class="album-wave wave-2"></div><span>♫</span></div>
+        <div class="track-info"><b id="trackTitle">Starlight sketch</b><small id="trackSubtitle">Waiting for your next idea</small><div class="track-meter"><span id="trackMeter"></span></div></div>
+      </div>
+      <div class="playback-controls"><button id="stopBtn" class="round-control" title="Stop">■</button><button id="playBtn" class="play-control" title="Play or pause">▶</button><span id="timeDisplay">00:00</span><div class="volume-wrap">♫ <input id="volume" type="range" min="0" max="100" value="70" aria-label="Volume"></div></div>
+      <div class="upload-area" id="dropZone"><div class="upload-icon">↑</div><div><b>Bring your own MIDI</b><small>Drop a .mid file here or <label class="browse-link" for="midiFile">browse files</label></small></div><input type="file" id="midiFile" accept=".mid,.midi,audio/midi"></div>
+      <div class="player-footer"><button class="text-action" id="downloadBtn" disabled>↓ Download MIDI</button><span id="fileStatus">No song loaded</span></div>
+    </article>
+    <article class="mode-card library-card" id="library">
+      <div class="card-top"><span class="mode-icon gold">♫</span><span class="card-number">03 / YOURS</span></div>
+      <h3>Your little library</h3><p>Keep the musical moments you like and come back to them whenever you want.</p>
+      <div class="library-empty" id="libraryEmpty"><div class="empty-stars">✧ · ✦</div><b>Your collection starts here</b><small>Generate a song or record a piano idea, then save it.</small></div>
+      <div class="saved-list" id="savedList"></div>
+      <button class="card-action outline-action" id="saveSongBtn" disabled>＋ Save current song</button>
+      <small class="hint">Saved songs stay in this browser.</small>
+    </article>
+  </div>
+</section>
+
+<section class="piano-section" id="piano-section">
+  <div class="piano-heading"><div><div class="eyebrow">YOUR INSTRUMENT</div><h2>The keys are yours.</h2><p>Click a key or use your computer keyboard. Press record and make a little something of your own.</p></div><div class="piano-actions"><button id="recordBtn" class="record-btn"><span></span> Record</button><button id="clearRecordingBtn" class="small-btn">Clear</button></div></div>
+  <div class="piano-shell">
+    <div class="piano-topline"><div><span class="sound-indicator"></span><span id="pianoStatus">PIANO READY</span></div><div class="key-guide">KEYS <kbd>A</kbd><kbd>W</kbd><kbd>S</kbd><kbd>E</kbd><kbd>D</kbd><kbd>F</kbd><kbd>T</kbd><kbd>G</kbd><kbd>Y</kbd><kbd>H</kbd><kbd>U</kbd><kbd>J</kbd><kbd>K</kbd></div></div>
+    <div class="keyboard-viewport"><div id="piano" class="piano"></div></div>
+    <div class="piano-bottom"><span>✦ Every small note is a new beginning.</span><div><button id="playRecordingBtn" class="text-action" disabled>▶ Play recording</button><button id="downloadRecordingBtn" class="text-action" disabled>↓ Export MIDI</button></div></div>
+  </div>
+  <div class="piano-tip"><span>✧</span> Tip: use your A–K keys for the white notes and W, E, T, Y, U for the black keys.</div>
+</section>
+
+<section class="bottom-banner">
+  <div class="banner-star">✦</div><div><h2>A little music goes a long way.</h2><p>Make room for play. Your next favorite melody might be one note away.</p></div><button id="bannerPlay">Let's make music <span>↗</span></button>
+</section>
+<footer><a class="brand footer-brand" href="#"><span class="brand-icon">♫</span><span><b>starlight</b><small>AI MUSIC STUDIO</small></span></a><span>Made for music, curiosity, and a little bit of magic.</span><span class="footer-right">✦ Keep creating</span></footer>
+</main>
+<div class="toast" id="toast" role="status"></div>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
